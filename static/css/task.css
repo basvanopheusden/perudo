@@ -41,6 +41,7 @@ img {
 	font-size:18pt;
 	padding: 10px 10px; 
 	text-decoration:none;
+	background-repeat:no-repeat;
 }
 .mybutton:hover {
 	background-color:#aaaaaa;
@@ -48,11 +49,10 @@ img {
 
 #feedback{
 	position:fixed; 
-	bottom:50%; 
+	bottom:52.5%; 
 	right:50%; 
 	width:50%;
 	height:10%;
-	font-size:24pt; 
 	transform:translate(50%, -50%)
 }
 
@@ -70,6 +70,7 @@ img {
 	border-color: #222222;
 	transform: translate(50%, -50%);
 }
+
 
 .die p{
 	position: absolute;
