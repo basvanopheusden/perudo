@@ -20,7 +20,7 @@ function start_block(){
 	ncats=Math.ceil(3*Math.random())+1;
 	for(i=0;i<5;i++){
 		if(i<ndice_self){
-			$('#'+"die_self"+i.toString()).css({bottom: "30%", right: ((50-(ndice_self/2-i-1/2)*15).toString() + "%")}).show();			
+			$('#'+"die_self"+i.toString()).css({bottom: "15%", right: ((50-(ndice_self/2-i-1/2)*15).toString() + "%")}).show();			
 		}
 		else {
 			$('#'+"die_self"+i.toString()).hide();			
@@ -28,7 +28,7 @@ function start_block(){
 	}
 	for(i=0;i<5;i++){
 		if(i<ndice_opp){
-			$('#'+"die_opp"+i.toString()).css({bottom: "80%", right: ((50-(ndice_opp/2-i-1/2)*15).toString() + "%")}).show();			
+			$('#'+"die_opp"+i.toString()).css({bottom: "85%", right: ((50-(ndice_opp/2-i-1/2)*15).toString() + "%")}).show();			
 		}
 		else {
 			$('#'+"die_opp"+i.toString()).hide();			

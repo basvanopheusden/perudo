@@ -16,29 +16,30 @@
     </head>
     <body>
 	
-	<img class="die" id="die_self0"></img>
-	<img class="die" id="die_self1"></img>
-	<img class="die" id="die_self2"></img>
-	<img class="die" id="die_self3"></img>
-	<img class="die" id="die_self4"></img>
+	<div class="container">
+		<img class="die" id="die_self0"></img>
+		<img class="die" id="die_self1"></img>
+		<img class="die" id="die_self2"></img>
+		<img class="die" id="die_self3"></img>
+		<img class="die" id="die_self4"></img>
 
-	<div style="position:fixed; bottom:65%; right:50%; width:50%; height:10%; font-size:48pt; transform:translate(50%, -50%);">
-		<span id="statement_begin"></span>
-		<img id= "statement_pic" style="height:60%;"></img>
-		<span id="statement_end"></span>
+		<div style="position:absolute; bottom:65%; right:50%; width:100%; height:10%; font-size:4vw; transform:translate(50%, 50%);">
+			<span id="statement_begin"></span>
+			<img id= "statement_pic" style="height:100%;"></img>
+			<span id="statement_end"></span>
+		</div>
+		<div id="feedback"><p style="font-size:2vw"></p><p style="font-size:3vw"></p></div>
+	
+		<button id="yesbutton" class="mybutton"><p style="font-size:2vw">True</p><p style="font-size:3vw"></p></button>
+		<button id="nobutton" class="mybutton"><p style="font-size:2vw">False</p><p style="font-size:3vw"></p></button>
+		<button id="nextbutton" class="mybutton" disabled>Next </button>
+	
+		<div class="die" id="die_opp0"> <p>?</p></div>
+		<div class="die" id="die_opp1"> <p>?</p></div>
+		<div class="die" id="die_opp2"> <p>?</p></div>
+		<div class="die" id="die_opp3"> <p>?</p></div>
+		<div class="die" id="die_opp4"> <p>?</p></div>
 	</div>
-	<div id="feedback"><p style="font-size:24pt"></p><p style="font-size:36pt"></p></div>
-	
-	<button id="yesbutton" class="mybutton"><p style="font-size:24pt">True</p><p style="font-size:36pt"></p></button>
-	<button id="nobutton" class="mybutton"><p style="font-size:24pt">False</p><p style="font-size:36pt"></p></button>
-	<button id="nextbutton" class="mybutton" disabled>Next </button>
-	
-	
-	<div class="die" id="die_opp0"> <p>?</p></div>
-	<div class="die" id="die_opp1"> <p>?</p></div>
-	<div class="die" id="die_opp2"> <p>?</p></div>
-	<div class="die" id="die_opp3"> <p>?</p></div>
-	<div class="die" id="die_opp4"> <p>?</p></div>
 	
 	</body>
 </html>
