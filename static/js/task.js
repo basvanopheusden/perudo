@@ -4,8 +4,15 @@ var ndice_self;
 var ndice_opp;
 var trials_completed;
 var data;
-var n_blocks=2;
-var trials_per_block=5;
+var n_blocks=10;
+var trials_per_block=10;
+
+function binom(n, k) {
+    var coeff = 1;
+    for (var i = n-k+1; i <= n; i++) coeff *= i;
+    for (var i = 1;     i <= k; i++) coeff /= i;
+    return coeff;
+}
 
 var task = function(){
 	trials_completed=0;
@@ -17,7 +24,7 @@ var task = function(){
 function start_block(){
 	ndice_opp=Math.ceil(5*Math.random());
 	ndice_self=Math.ceil(5*Math.random());
-	ncats=Math.ceil(3*Math.random())+1;
+	ncats=4;//Math.ceil(3*Math.random())+1;
 	for(i=0;i<5;i++){
 		if(i<ndice_self){
 			$('#'+"die_self"+i.toString()).css({bottom: "15%", right: ((50-(ndice_self/2-i-1/2)*15).toString() + "%")}).show();			
@@ -102,29 +109,30 @@ function do_trial(){
 	var d_opp=[];
 	var n=0;
 	var d_target=Math.floor(ncats*Math.random());
-	var r_yes=Math.ceil(5*Math.random());
-	var r_no=Math.ceil(5*Math.random());
-	var n_target;
+	var temp=get_nopp();
+	var n_opp=temp[0];
+	var p=temp[1];
+	var r=set_rewards(p);
 	for(i=0;i<ndice_self;i++){
 		d_self[i]=Math.floor(ncats*Math.random());
 		if(d_target==d_self[i]){n++};
 	}
-	n_target=n+Math.ceil(ndice_opp*Math.random());
+	n_target=n+n_opp;
 	for(i=0;i<ndice_opp;i++){
 		d_opp[i]=Math.floor(ncats*Math.random());
 		if(d_target==d_opp[i]){n++};
-	}
-	set_rewards(r_yes,r_no);
+	}	
+	show_rewards(r[0],r[1]);
 	showdice_self(d_self,d_target);
 	showstatement(n_target,d_target);
 	correct_resp=(n>=n_target);
-	r=(correct_resp==true ? r_yes : r_no);
-	add_stim_to_data(n_target, d_target, d_self, d_opp, r_yes, r_no);
+	r=(correct_resp==true ? r[0] : r[1]);
+	add_stim_to_data(n_target, d_target, d_self, d_opp, r[0], r[1]);
 	$('#yesbutton').off("click").click(function(){respond(true,correct_resp,r,d_opp,d_target);});	
 	$('#nobutton').off("click").click(function(){respond(false,correct_resp,r,d_opp,d_target);});	
 }
 
-function set_rewards(r_yes,r_no){
+function show_rewards(r_yes,r_no){
 	$('#yesbutton p').last().text("$" + r_yes.toString());
 	$('#nobutton p').last().text("$" + r_no.toString());
 }
@@ -165,6 +173,29 @@ function showstatement(n,i){
 		$("#statement_begin").text("There is at least 1");
 		$("#statement_end").text("");
 	}
+}
+
+function generate_lognormal(mu,sigma){
+	var alpha = Math.random(), beta = Math.random();
+    var z=Math.sqrt(-2 * Math.log(alpha)) * Math.sin(2 * Math.PI * beta);
+	return mu*Math.exp(sigma*z);
+}
+
+function set_rewards(p){
+	var ratio=generate_lognormal(p/(1-p),0.5);
+	return [Math.ceil(10/(1+ratio)),Math.ceil(10*ratio/(1+ratio))] 
+}
+
+function get_nopp(){
+	var n=ndice_opp;
+	var cdf=[1,1-Math.pow(1 - 1/ncats,n)];
+	var x=cdf[1]*Math.random();
+	var i=1;
+	while(x<cdf[i]){
+		cdf[i+1]=cdf[i]-binom(n,i) * Math.pow(1/ncats,i) * Math.pow(1 - 1/ncats,n - i);
+		i++;
+	}
+	return [i-1,cdf[i-1]];
 }
 
 $(document).ready( function(){
