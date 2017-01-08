@@ -126,10 +126,10 @@ function do_trial(){
 	showdice_self(d_self,d_target);
 	showstatement(n_target,d_target);
 	correct_resp=(n>=n_target);
-	r=(correct_resp==true ? r[0] : r[1]);
+	r_corr=(correct_resp==true ? r[0] : r[1]);
 	add_stim_to_data(n_target, d_target, d_self, d_opp, r[0], r[1]);
-	$('#yesbutton').off("click").click(function(){respond(true,correct_resp,r,d_opp,d_target);});	
-	$('#nobutton').off("click").click(function(){respond(false,correct_resp,r,d_opp,d_target);});	
+	$('#yesbutton').off("click").click(function(){respond(true,correct_resp,r_corr,d_opp,d_target);});	
+	$('#nobutton').off("click").click(function(){respond(false,correct_resp,r_corr,d_opp,d_target);});	
 }
 
 function show_rewards(r_yes,r_no){
