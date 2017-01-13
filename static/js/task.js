@@ -1,4 +1,7 @@
-var images = ["maija.png", "mingyu.jpg", "andra.jpg", "aspen.jpg"];
+var imgs = ["puppy.jpg", "turtle.jpg", "jag.jpg", "duckling.jpg", "volcano.jpg","lightning.jpg","castle.jpg","waterfall.jpg",
+              "sunset.jpg","barn.jpg","coffee.jpg","owl.jpg","wall.jpg","space_shuttle.jpg","lego.jpg","cat.jpg","banana.jpg","sushi.jpg",
+			  "ramen.jpg","porkbuns.jpg","panda.jpg","dragonfruit.jpg","moon.jpg","goldengate.jpg","chess.jpg","monet.jpg","dali.jpg"];
+var imgs_block;
 var ncats;
 var ndice_self;
 var ndice_opp;
@@ -6,6 +9,19 @@ var trials_completed;
 var data;
 var n_blocks=10;
 var trials_per_block=10;
+var max_reward=10;
+
+function shuffle(array){
+  var currentIndex = array.length, temporaryValue, randomIndex;
+  while (0 !== currentIndex){
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+  return array;
+}
 
 function binom(n, k) {
     var coeff = 1;
@@ -16,15 +32,24 @@ function binom(n, k) {
 
 var task = function(){
 	trials_completed=0;
-	data=[];
+	data=[];	
+	$('#instructions_block button').click(function(){
+		$('#instructions_block').hide();
+		$(".overlayed").hide();
+		do_trial();
+	});
+	$('#instructions_task button').click(function(){
+		$('#instructions_task').hide();
+		start_block();
+	});
 	$('#nextbutton').click(function(){click_next();});
-	start_block();
 }
 
 function start_block(){
 	ndice_opp=Math.ceil(5*Math.random());
 	ndice_self=Math.ceil(5*Math.random());
-	ncats=4;//Math.ceil(3*Math.random())+1;
+	ncats=Math.ceil(4*Math.random())+1;
+	imgs_block=shuffle(imgs).slice(0,ncats);
 	for(i=0;i<5;i++){
 		if(i<ndice_self){
 			$('#'+"die_self"+i.toString()).css({bottom: "15%", right: ((50-(ndice_self/2-i-1/2)*15).toString() + "%")}).show();			
@@ -41,7 +66,20 @@ function start_block(){
 			$('#'+"die_opp"+i.toString()).hide();			
 		}
 	}
-	do_trial();
+	for(i=0;i<5;i++){
+		if(i<ncats){
+			$('#'+"example"+i.toString()).css("background-image","url('media/" + imgs_block[i] + "')").show();
+		}
+		else {
+			$('#'+"example"+i.toString()).hide();			
+		}
+	}
+	$(".overlayed").show();
+	$('#instructions_block').show();
+	$('#instructions_block p b').first().text(ndice_self.toString());
+	$('#instructions_block p b').last().text(ndice_opp.toString());
+	$('#instructions_block p span').first().text(ndice_self>1?"s":"");
+	$('#instructions_block p span').last().text(ndice_opp>1?"s":"");
 }
 
 function respond(resp,correct_resp,r,d_opp,d_target){
@@ -139,7 +177,7 @@ function show_rewards(r_yes,r_no){
 
 function showdice_self(l,t){
 	for(i=0;i<ndice_self;i++){
-		$('#'+"die_self"+i.toString()).css("background-image","url('media/" + images[l[i]] + "')");
+		$('#'+"die_self"+i.toString()).css("background-image","url('media/" + imgs_block[l[i]] + "')");
 		if(l[i]==t){
 			$('#'+"die_self"+i.toString()).addClass("correct_die");
 		}
@@ -149,7 +187,7 @@ function showdice_self(l,t){
 function showdice_opp(l,t){
 	$(".die p").hide();
 	for(i=0;i<ndice_opp;i++){
-		$('#'+"die_opp"+i.toString()).css("background-image","url('media/" + images[l[i]] + "')");
+		$('#'+"die_opp"+i.toString()).css("background-image","url('media/" + imgs_block[l[i]] + "')");
 		if(l[i]==t){
 			$('#'+"die_opp"+i.toString()).addClass("correct_die");
 		}
@@ -164,10 +202,10 @@ function hidedice_opp(){
 }
 
 function showstatement(n,i){
-	$("#statement_pic").attr("src","media/" + images[i]);
+	$("#statement_pic").css("background-image","url('media/" + imgs_block[i] + "')");
 	if(n>1){
 		$("#statement_begin").text("There are at least " + n.toString());
-		$("#statement_end").text("'s");
+		$("#statement_end").text("s");
 	}
 	else {
 		$("#statement_begin").text("There is at least 1");
@@ -183,7 +221,7 @@ function generate_lognormal(mu,sigma){
 
 function set_rewards(p){
 	var ratio=generate_lognormal(p/(1-p),0.5);
-	return [Math.ceil(10/(1+ratio)),Math.ceil(10*ratio/(1+ratio))] 
+	return [Math.ceil(max_reward/(1+ratio)),Math.ceil(max_reward*ratio/(1+ratio))] 
 }
 
 function get_nopp(){
@@ -199,5 +237,5 @@ function get_nopp(){
 }
 
 $(document).ready( function(){
-    currentview = new task();
+	currentview = new task();
 });
