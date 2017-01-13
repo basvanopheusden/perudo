@@ -8,7 +8,7 @@ var ndice_opp;
 var trials_completed;
 var data;
 var n_blocks=10;
-var trials_per_block=10;
+var trials_per_block=25;
 var max_reward=10;
 
 function shuffle(array){
@@ -32,7 +32,10 @@ function binom(n, k) {
 
 var task = function(){
 	trials_completed=0;
-	data=[];	
+	data=[];
+	$('#instructions_block p span:eq(0)').text(trials_per_block.toString());	
+	$('#instructions_task p span:eq(0)').text((trials_per_block*n_blocks).toString());	
+	$('#instructions_task p span:eq(1)').text(trials_per_block.toString());	
 	$('#instructions_block button').click(function(){
 		$('#instructions_block').hide();
 		$(".overlayed").hide();
@@ -78,8 +81,8 @@ function start_block(){
 	$('#instructions_block').show();
 	$('#instructions_block p b').first().text(ndice_self.toString());
 	$('#instructions_block p b').last().text(ndice_opp.toString());
-	$('#instructions_block p span').first().text(ndice_self>1?"s":"");
-	$('#instructions_block p span').last().text(ndice_opp>1?"s":"");
+	$('#instructions_block p span:eq(1)').text(ndice_self>1?"s":"");
+	$('#instructions_block p span:eq(2)').text(ndice_opp>1?"s":"");
 }
 
 function respond(resp,correct_resp,r,d_opp,d_target){
